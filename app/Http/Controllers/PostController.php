@@ -38,7 +38,13 @@ class PostController extends Controller
             'titulo' => 'required|min:3',
             'slug' => 'required|unique:posts,slug',
             'contenido' => 'required|min:10',
+            'imagen' => 'nullable|image|max:2048'  // 👈 VALIDACIÓN
         ]);
+
+        $imagenPath = null;
+        if ($request->hasFile('imagen')) {
+            $imagenPath = $request->file('imagen')->store('posts', 'public');
+        }
 
         Post::create([
             'user_id' => auth()->id(),
@@ -46,6 +52,7 @@ class PostController extends Controller
             'slug' => $request->slug,
             'contenido' => $request->contenido,
             'publicado' => $request->has('publicado'),
+            'imagen' => $imagenPath,  // 👈 GUARDAR IMAGEN
         ]);
 
         return redirect('/admin/posts')->with('success', 'Post creado correctamente');
@@ -62,14 +69,21 @@ class PostController extends Controller
             'titulo' => 'required|min:3',
             'slug' => 'required|unique:posts,slug,' . $post->id,
             'contenido' => 'required|min:10',
+            'imagen' => 'nullable|image|max:2048'
         ]);
 
-        $post->update([
+        $data = [
             'titulo' => $request->titulo,
             'slug' => $request->slug,
             'contenido' => $request->contenido,
             'publicado' => $request->has('publicado'),
-        ]);
+        ];
+
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store('posts', 'public');
+        }
+
+        $post->update($data);
 
         return redirect('/admin/posts')->with('success', 'Post actualizado');
     }
