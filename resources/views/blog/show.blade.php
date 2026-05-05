@@ -45,6 +45,10 @@
     <a href="/blog">← Volver al blog</a>
     
     <h1>{{ $post->titulo }}</h1>
+     @if($post->imagen)
+        <img src="{{ $post->imagen }}" alt="Imagen del post">
+    @endif
+
     <p>{{ $post->contenido }}</p>
     
 

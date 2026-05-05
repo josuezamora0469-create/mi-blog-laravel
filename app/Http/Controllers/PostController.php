@@ -38,12 +38,15 @@ class PostController extends Controller
             'titulo' => 'required|min:3',
             'slug' => 'required|unique:posts,slug',
             'contenido' => 'required|min:10',
-            'imagen' => 'nullable|image|max:2048'  // 👈 VALIDACIÓN
+            'imagen' => 'nullable|image|max:2048'
         ]);
 
-        $imagenPath = null;
+        $imagenUrl = null;
         if ($request->hasFile('imagen')) {
-            $imagenPath = $request->file('imagen')->store('posts', 'public');
+            // Guardar la imagen en el disco público
+            $path = $request->file('imagen')->store('posts', 'public');
+            // Crear URL completa
+            $imagenUrl = env('APP_URL') . '/storage/' . $path;
         }
 
         Post::create([
@@ -52,7 +55,7 @@ class PostController extends Controller
             'slug' => $request->slug,
             'contenido' => $request->contenido,
             'publicado' => $request->has('publicado'),
-            'imagen' => $imagenPath,  // 👈 GUARDAR IMAGEN
+            'imagen' => $imagenUrl,  // Guardamos la URL completa
         ]);
 
         return redirect('/admin/posts')->with('success', 'Post creado correctamente');
