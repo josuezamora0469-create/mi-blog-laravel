@@ -6,11 +6,7 @@
         <h3>Crear Nuevo Post</h3>
     </div>
     <div class="card-body">
-        <!-- 👇 AGREGA enctype="multipart/form-data" AQUÍ 👇 -->
         <form action="/admin/posts" method="POST" enctype="multipart/form-data">
-
-
-        <form action="/admin/posts" method="POST">
             @csrf
             
             <div class="mb-3">
@@ -28,24 +24,20 @@
                 <label class="form-label">Contenido</label>
                 <textarea name="contenido" rows="10" class="form-control" required></textarea>
             </div>
-            
-             <!-- 👇 AGREGA EL CAMPO DE IMAGEN AQUÍ 👇 -->
+
             <div class="mb-3">
                 <label class="form-label">Imagen (opcional)</label>
                 <input type="file" name="imagen" class="form-control" accept="image/*">
                 <small class="text-muted">Formatos: JPG, PNG, GIF (máx. 2MB)</small>
             </div>
-            <!-- 👆 HASTA AQUÍ 👆 -->
             
             <div class="mb-3 form-check">
                 <input type="checkbox" name="publicado" value="1" class="form-check-input" id="publicado">
                 <label class="form-check-label" for="publicado">Publicar inmediatamente</label>
             </div>
 
-            
             <button type="submit" class="btn btn-success">Guardar</button>
             <a href="/admin/posts" class="btn btn-secondary">Cancelar</a>
-
 
         </form>
     </div>
